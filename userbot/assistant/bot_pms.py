@@ -103,10 +103,10 @@ async def bot_start(event):
                 my_mention=my_mention,
             )
         else:
-            start_msg = f"Hey! 👤{mention},\
-                        \nI am {my_mention}'s assistant bot.\
-                        \nYou can contact to my master from here.\
-                        \n\nPowered by [Catuserbot](https://t.me/catuserbot)"
+            start_msg = f"Heya {mention}!!\n\n
+                          Hope you seen [this](https://t.me/BeforePM).\n\n
+                          ➪ Now leave your query in one message.\n
+                          ➪ Don't delete or block this bot. If done i can't reply 🤷🏻‍♂"
         buttons = [
             (
                 Button.url("OWNER", "t.me/VinuXD"),
