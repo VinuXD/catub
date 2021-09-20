@@ -5,7 +5,7 @@ Modified by @mrconfused
 """
 
 import io
-import time
+import asyncio
 import traceback
 from datetime import datetime
 
@@ -61,7 +61,7 @@ async def _(event):
             if not caturl:
                 return await catevent.edit("`The given input is not supported url`")
         if cmd == "gis":
-            inputstr = "https://www.google.com/search?q=" + input_str
+            inputstr = "https://www.bing.com/search?q=" + input_str
         driver.get(inputstr)
         await catevent.edit("`Calculating Page Dimensions`")
         height = driver.execute_script(
@@ -71,12 +71,13 @@ async def _(event):
             "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);"
         )
         driver.set_window_size(width + 100, height + 100)
-        time.sleep(2)
+        await catevent.edit("`Taking screenshot...`")
+        await asyncio.sleep(2)
+        await catevent.edit("`Uploading...`")
         # Add some pixels on top of the calculated dimensions
         # for good measure to make the scroll bars disappear
         im_png = driver.get_screenshot_as_png()
         # saves screenshot of entire page
-        await catevent.edit("`Stoppping Chrome Bin`")
         driver.close()
         message_id = await reply_id(event)
         end = datetime.now()

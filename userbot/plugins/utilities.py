@@ -1,5 +1,5 @@
 import random
-import time
+import asyncio
 
 import bs4
 import requests
@@ -51,9 +51,9 @@ async def _(event):
                 await pluto.edit(str(timer))
             except FloodWaitError as e:
                 t -= e.seconds
-                time.sleep(e.seconds)
+                await asyncio.sleep(e.seconds)
             else:
-                time.sleep(x - 0.08)
+                asyncio.sleep(x - 0.08)
                 t -= x
         await pluto.edit(f"**⏱ Time Up!\n⌛️ Time: {total} seconds.**")
     except Exception as e:
