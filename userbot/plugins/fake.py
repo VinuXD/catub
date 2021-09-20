@@ -36,6 +36,7 @@ plugin_category = "fun"
             "video",
             "photo",
             "audio",
+            "sticker",
             "document",
         ],
     },
@@ -51,6 +52,7 @@ async def _(event):
         "video",
         "photo",
         "audio",
+        "sticker",
         "document",
     ]
     input_str = event.pattern_match.group(1)
