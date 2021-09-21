@@ -63,9 +63,9 @@ async def startupmessage():
         if BOTLOG:
             Config.CATUBLOGO = await catub.tgbot.send_file(
                 BOTLOG_CHATID,
-                "https://telegra.ph/file/916a83572ba8a0bcea05f.mp4",
-                caption="** Illuminati Confirmed successfully**",
-                buttons=[(Button.url("OWNER", "https://t.me/VinuXD"),)],
+                "https://telegra.ph/file/dd8db5c3b7adbbdc3cccd.mp4",
+                caption="**Illuminati Confirmed...!**",
+                buttons=[(Button.url("𝗢𝗪𝗡𝗘𝗥", "https://t.me/VinuXD"),)],
             )
     except Exception as e:
         LOGS.error(e)
