@@ -53,10 +53,9 @@ def ibuild_keyboard(buttons):
 
 
 def main_menu():
-    text = f"Help Menu\
-        \nOwner : {mention}"
+    text = f"╘══「 HELP MENU 」\
+        \n╘══「 𝙊𝙒𝙉𝙀𝙍  : {mention} 」"
     buttons = [
-        (Button.inline("ℹ️ Info", data="check"),),
         (
             Button.inline(f"👮‍♂️ Admin ({len(GRP_INFO['admin'])})", data="admin_menu"),
             Button.inline(f"🤖 Bot ({len(GRP_INFO['bot'])})", data="bot_menu"),
