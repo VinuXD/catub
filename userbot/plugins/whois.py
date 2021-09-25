@@ -25,7 +25,7 @@ async def fetch_info(replied_user, event):
     """Get details from the User object."""
     replied_user_profile_photos = await event.client(
         GetUserPhotosRequest(
-            user_id=replied_user.user.id,
+            user_id=replied_user.user.id,offset=42, max_id=0, limit=80
         )
     )
     replied_user_profile_photos_count = "No profile pics"
