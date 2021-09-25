@@ -21,11 +21,12 @@ plugin_category = "utils"
 LOGS = logging.getLogger(__name__)
 
 
+
 async def fetch_info(replied_user, event):
     """Get details from the User object."""
     replied_user_profile_photos = await event.client(
         GetUserPhotosRequest(
-            user_id=replied_user.user.id,
+            user_id=replied_user.user.id,offset=42, max_id=0, limit=80
         )
     )
     replied_user_profile_photos_count = "No profile pics"
@@ -48,7 +49,7 @@ async def fetch_info(replied_user, event):
     verified = replied_user.user.verified
     photo = await event.client.download_profile_photo(
         user_id,
-        Config.TMP_DOWNLOAD_DIRECTORY + str(user_id) + ".png",
+        str(user_id) + ".png",
         download_big=True,
     )
     first_name = (
@@ -60,19 +61,17 @@ async def fetch_info(replied_user, event):
     username = "@{}".format(username) if username else ("No Username")
     user_bio = "No Bio" if not user_bio else user_bio
     #Design taken from https://github.com/SaitamaRobot by @VinuXD
-    caption = "<b><i>╒═══「<b> Appraisal results:</b>」</i></b>\n\n"
+    caption = "<b>╒═══「<b> Appraisal results:</b>」</b>\n\n"
     caption += f"<b>» Name:</b> {first_name} {last_name}\n"
     caption += f"<b>» Username:</b> {username}\n"
     caption += f"<b>» ID:</b> <code>{user_id}</code>\n"
-    caption += f"<b>» Data Centre ID:</b> {dc_id}\n\n"
+    caption += f"<b>» Data Centre ID:</b> <code>{dc_id}</code>\n\n"
     caption += f"<b>» Is Bot:</b> {is_bot}\n"
     caption += f"<b>» Is Restricted:</b> {restricted}\n"
     caption += "<b>» Permalink:</b> "
     caption += f'<a href="tg://user?id={user_id}">link</a>'
-    caption += f"<b>\n\n» Spamwatched:</b> {sw}\n"
-    caption += f"<b>» CAS Banned:</b> {cas}\n\n"
-    caption += f"<b>» About:</b> {user_bio}\n\n"
-    caption += f"<b><i>╘═══「<b>Group count: {common_chat}</b>」</i></b>\n"
+    caption += f"<b>\n\n» About:</b> {user_bio}\n\n"
+    caption += f"<b>╘═══「<b>Group count: <code>{common_chat}</code></b>」</b>\n"
     
     return photo, caption
 
@@ -86,6 +85,8 @@ async def fetch_info(replied_user, event):
         "usage": "{tr}userinfo <username/userid/reply>",
     },
 )
+
+
 async def _(event):
     "Gets information of an user such as restrictions ban by spamwatch or cas"
     replied_user, error_i_a = await get_user_from_event(event)
@@ -129,13 +130,14 @@ async def _(event):
             cas = "**CAS Banned :** `False`"
     else:
         cas = "**CAS Banned :** `Couldn't Fetch`"
-    caption = """**╒═══「<b> Info of [{}](tg://user?id={}):</b>」
-   -🔖ID : **`{}`
-   **-**👥**Groups in Common : **`{}`
-   **-**🌏**Data Centre Number : **`{}`
-   **-**🔏**Restricted : **`{}`
-   **-**🦅{}
-   **-**👮‍♂️{}
+    #Changed design by @VinuXD
+    caption = """╒═══「 Info of [{}](tg://user?id={})」
+   **» **🔖ID : **`{}`
+   **» **👥**Groups in Common : **`{}`
+   **» **🌏**Data Centre Number : **`{}`
+   **» **🔏**Restricted : **`{}`
+   **» **🦅{}
+   **» **👮‍♂️{}
 """.format(
         first_name,
         user_id,
@@ -147,7 +149,6 @@ async def _(event):
         cas,
     )
     await edit_or_reply(catevent, caption)
-
 
 @catub.cat_cmd(
     pattern="whois(?:\s|$)([\s\S]*)",
