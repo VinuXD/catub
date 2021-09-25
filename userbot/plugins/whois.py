@@ -132,9 +132,7 @@ async def fetch_info(replied_user, event):
     caption += f"<b>» Is Restricted:</b> {restricted}\n"
     caption += "<b>» Permalink:</b> "
     caption += f'<a href="tg://user?id={user_id}">link</a>'
-    caption += f"<b>\n\n» Spamwatched:</b> {sw}\n"
-    caption += f"<b>» CAS Banned:</b> {cas}\n\n"
-    caption += f"<b>» About:</b> {user_bio}\n\n"
+    caption += f"<b>\n\n» About:</b> {user_bio}\n\n"
     caption += f"<b><i>╘═══「<b>Group count: {common_chat}</b>」</i></b>\n"
     
     return photo, caption
