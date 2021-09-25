@@ -130,13 +130,14 @@ async def _(event):
             cas = "**CAS Banned :** `False`"
     else:
         cas = "**CAS Banned :** `Couldn't Fetch`"
-    caption = """**╒═══「<b> Info of [{}](tg://user?id={}):</b>」
-   -🔖ID : **`{}`
-   **-**👥**Groups in Common : **`{}`
-   **-**🌏**Data Centre Number : **`{}`
-   **-**🔏**Restricted : **`{}`
-   **-**🦅{}
-   **-**👮‍♂️{}
+    #Changed design by @VinuXD
+    caption = """╒═══「 Info of [{}](tg://user?id={})」
+   **» **🔖ID : **`{}`
+   **» **👥**Groups in Common : **`{}`
+   **» **🌏**Data Centre Number : **`{}`
+   **» **🔏**Restricted : **`{}`
+   **» **🦅{}
+   **» **👮‍♂️{}
 """.format(
         first_name,
         user_id,
