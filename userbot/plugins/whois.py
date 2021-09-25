@@ -21,6 +21,69 @@ plugin_category = "utils"
 LOGS = logging.getLogger(__name__)
 
 
+async def _(event):
+    "Gets information of an user such as restrictions ban by spamwatch or cas"
+    replied_user, error_i_a = await get_user_from_event(event)
+    if not replied_user:
+        return
+    catevent = await edit_or_reply(event, "`Appraising....`")
+    replied_user = await event.client(GetFullUserRequest(replied_user.id))
+    user_id = replied_user.user.id
+    # some people have weird HTML in their names
+    first_name = html.escape(replied_user.user.first_name)
+    # https://stackoverflow.com/a/5072031/4723940
+    # some Deleted Accounts do not have first_name
+    if first_name is not None:
+        # some weird people (like me) have more than 4096 characters in their
+        # names
+        first_name = first_name.replace("\u2060", "")
+    # inspired by https://telegram.dog/afsaI181
+    common_chats = replied_user.common_chats_count
+    try:
+        dc_id, location = get_input_location(replied_user.profile_photo)
+    except Exception:
+        dc_id = "Couldn't fetch DC ID!"
+    if spamwatch:
+        ban = spamwatch.get_ban(user_id)
+        if ban:
+            sw = f"**Spamwatched:** `True` \n       **-**🤷‍♂️**Reason : **`{ban.reason}`"
+        else:
+            sw = f"**Spamwatched:** `False`"
+    else:
+        sw = "**Spamwatched:**`Not Connected`"
+    try:
+        casurl = "https://api.cas.chat/check?user_id={}".format(user_id)
+        data = get(casurl).json()
+    except Exception as e:
+        LOGS.info(e)
+        data = None
+    if data:
+        if data["ok"]:
+            cas = "**CAS Banned :** `True`"
+        else:
+            cas = "**CAS Banned :** `False`"
+    else:
+        cas = "**CAS Banned :** `Couldn't Fetch`"
+    caption = """**╒═══「<b> Info of [{}](tg://user?id={}):</b>」
+   -🔖ID : **`{}`
+   **-**👥**Groups in Common : **`{}`
+   **-**🌏**Data Centre Number : **`{}`
+   **-**🔏**Restricted : **`{}`
+   **-**🦅{}
+   **-**👮‍♂️{}
+""".format(
+        first_name,
+        user_id,
+        user_id,
+        common_chats,
+        dc_id,
+        replied_user.user.restricted,
+        sw,
+        cas,
+    )
+    await edit_or_reply(catevent, caption)
+
+
 async def fetch_info(replied_user, event):
     """Get details from the User object."""
     replied_user_profile_photos = await event.client(
@@ -86,68 +149,6 @@ async def fetch_info(replied_user, event):
         "usage": "{tr}userinfo <username/userid/reply>",
     },
 )
-async def _(event):
-    "Gets information of an user such as restrictions ban by spamwatch or cas"
-    replied_user, error_i_a = await get_user_from_event(event)
-    if not replied_user:
-        return
-    catevent = await edit_or_reply(event, "`Appraising....`")
-    replied_user = await event.client(GetFullUserRequest(replied_user.id))
-    user_id = replied_user.user.id
-    # some people have weird HTML in their names
-    first_name = html.escape(replied_user.user.first_name)
-    # https://stackoverflow.com/a/5072031/4723940
-    # some Deleted Accounts do not have first_name
-    if first_name is not None:
-        # some weird people (like me) have more than 4096 characters in their
-        # names
-        first_name = first_name.replace("\u2060", "")
-    # inspired by https://telegram.dog/afsaI181
-    common_chats = replied_user.common_chats_count
-    try:
-        dc_id, location = get_input_location(replied_user.profile_photo)
-    except Exception:
-        dc_id = "Couldn't fetch DC ID!"
-    if spamwatch:
-        ban = spamwatch.get_ban(user_id)
-        if ban:
-            sw = f"**Spamwatched:** `True` \n       **-**🤷‍♂️**Reason : **`{ban.reason}`"
-        else:
-            sw = f"**Spamwatched:** `False`"
-    else:
-        sw = "**Spamwatched:**`Not Connected`"
-    try:
-        casurl = "https://api.cas.chat/check?user_id={}".format(user_id)
-        data = get(casurl).json()
-    except Exception as e:
-        LOGS.info(e)
-        data = None
-    if data:
-        if data["ok"]:
-            cas = "**CAS Banned :** `True`"
-        else:
-            cas = "**CAS Banned :** `False`"
-    else:
-        cas = "**CAS Banned :** `Couldn't Fetch`"
-    caption = """**╒═══「<b> Info of [{}](tg://user?id={}):</b>」
-   -🔖ID : **`{}`
-   **-**👥**Groups in Common : **`{}`
-   **-**🌏**Data Centre Number : **`{}`
-   **-**🔏**Restricted : **`{}`
-   **-**🦅{}
-   **-**👮‍♂️{}
-""".format(
-        first_name,
-        user_id,
-        user_id,
-        common_chats,
-        dc_id,
-        replied_user.user.restricted,
-        sw,
-        cas,
-    )
-    await edit_or_reply(catevent, caption)
-
 
 @catub.cat_cmd(
     pattern="whois(?:\s|$)([\s\S]*)",
