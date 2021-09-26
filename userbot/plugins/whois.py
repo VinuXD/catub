@@ -61,7 +61,7 @@ async def fetch_info(replied_user, event):
     username = "@{}".format(username) if username else ("No Username")
     user_bio = "No Bio" if not user_bio else user_bio
     #Design taken from https://github.com/SaitamaRobot by @VinuXD
-    caption = "<b>╒═══「<b> Appraisal results:</b>」</b>\n\n"
+    caption = "<b>╒═══「<b> Appraisal results:</b> 」</b>\n\n"
     caption += f"<b>» Name:</b> {first_name} {last_name}\n"
     caption += f"<b>» Username:</b> {username}\n"
     caption += f"<b>» ID:</b> <code>{user_id}</code>\n"
@@ -70,7 +70,7 @@ async def fetch_info(replied_user, event):
     caption += f"<b>» Is Restricted:</b> {restricted}\n"
     caption += "<b>» Permalink:</b> "
     caption += f'<a href="tg://user?id={user_id}">link</a>'
-    caption += f"<b>\n\n» About:</b> {user_bio}\n\n"
+    caption += f"<b>\n\n» About User:</b> \n\t\t{user_bio}\n\n"
     caption += f"<b>╘═══「<b>Group count: <code>{common_chat}</code></b>」</b>\n"
     
     return photo, caption
