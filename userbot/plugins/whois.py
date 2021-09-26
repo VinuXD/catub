@@ -183,7 +183,7 @@ async def who(event):
             reply_to=message_id_to_reply,
             parse_mode="html",
         )
-        if photo.startswith("http"):
+        if not photo.startswith("http"):
             os.remove(photo)
         await cat.delete()
     except TypeError:
