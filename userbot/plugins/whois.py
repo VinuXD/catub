@@ -40,7 +40,7 @@ async def fetch_info(replied_user, event):
     try:
         dc_id, location = get_input_location(replied_user.profile_photo)
     except Exception:
-        dc_id = "Couldn't fetch DC ID!"
+        dc_id = "Can't Fetch"
     common_chat = replied_user.common_chats_count
     username = replied_user.user.username
     user_bio = replied_user.about
@@ -61,7 +61,7 @@ async def fetch_info(replied_user, event):
     username = "@{}".format(username) if username else ("No Username")
     user_bio = "No Bio" if not user_bio else user_bio
     #Design taken from https://github.com/SaitamaRobot by @VinuXD
-    caption = "<b>╒═══「<b> Appraisal results:</b> 」</b>\n\n"
+    caption = "<b>╒═══「<b> Appraisal results:</b> 」</b>\n"
     caption += f"<b>» Name:</b> {first_name} {last_name}\n"
     caption += f"<b>» Username:</b> {username}\n"
     caption += f"<b>» ID:</b> <code>{user_id}</code>\n"
@@ -108,7 +108,7 @@ async def _(event):
     try:
         dc_id, location = get_input_location(replied_user.profile_photo)
     except Exception:
-        dc_id = "Couldn't fetch DC ID!"
+        dc_id = "Can't Fetch"
     if spamwatch:
         ban = spamwatch.get_ban(user_id)
         if ban:
@@ -125,11 +125,11 @@ async def _(event):
         data = None
     if data:
         if data["ok"]:
-            cas = "**CAS Banned :** `True`"
+            cas = "CAS Banned : `True`"
         else:
-            cas = "**CAS Banned :** `False`"
+            cas = "CAS Banned : `False`"
     else:
-        cas = "**CAS Banned :** `Couldn't Fetch`"
+        cas = "CAS Banned : `Couldn't Fetch`"
     #Changed design by @VinuXD
     caption = """╒═══「 Info of [{}](tg://user?id={})」
    **» **🔖ID : **`{}`
@@ -137,7 +137,7 @@ async def _(event):
    **» **🌏**Data Centre Number : **`{}`
    **» **🔏**Restricted : **`{}`
    **» **🦅{}
-   **» **👮‍♂️{}
+   **» **👮‍♂️**{}**
 """.format(
         first_name,
         user_id,
