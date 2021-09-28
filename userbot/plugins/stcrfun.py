@@ -242,7 +242,7 @@ async def writer(e):
         os.remove(template)
     urllib.request.urlretrieve("https://raw.githubusercontent.com/Jisan09/Files/main/template/template.jpg",template)
     im1 =  Image.open(template)
-    k = await edit_delete(e, "`Processing ...`")
+    k = await edit_delete(e, "`Writing...`")
     fonts = "downloads/assfont.ttf"
     if os.path.exists("downloads/assfont.ttf"):
         os.remove(fonts)
