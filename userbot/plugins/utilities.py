@@ -58,7 +58,6 @@ async def _(event):
         await edit_delete(event, f"`{e}`", 7)
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="gey(?:\s|$)([\s\S]*)",
     command=("gey", plugin_category),
@@ -83,7 +82,6 @@ async def app_search(event):
         await event.edit(str(err))
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="fr(?:\s|$)([\s\S]*)",
     command=("fr", plugin_category),
@@ -108,7 +106,6 @@ async def app_search(event):
         await event.edit(str(err))
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="iapp(?:\s|$)([\s\S]*)",
     command=("iapp", plugin_category),
@@ -136,7 +133,6 @@ async def app_search(event):
         await event.edit("Exception Occured:- " + str(err))
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="cid(?:\s|$)([\s\S]*)",
     command=("cid", plugin_category),
