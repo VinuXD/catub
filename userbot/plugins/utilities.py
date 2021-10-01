@@ -101,8 +101,6 @@ async def app_search(event):
     event = await edit_or_reply(event, "`Processing!..`")
     id = await reply_id(event)
     try:
-        if not czy:
-            czy = " "
         pluto = await event.client.inline_query(FBOT, czy)
         await pluto[0].click(event.chat_id, reply_to=id, hide_via=True)
         await event.delete()
@@ -168,9 +166,7 @@ async def _(event):
             await conv.send_message(args)
             check = await conv.get_response()
             replace = check.text
-            info = replace.replace(
-                "════━(@RespawnRobot)━════", f"════━({mention})━════"
-            )
+            info = replace.replace(chat, f"{mention}")
             await event.client.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
             await event.client(functions.contacts.UnblockRequest(chat))
