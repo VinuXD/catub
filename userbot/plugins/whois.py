@@ -47,6 +47,14 @@ async def fetch_info(replied_user, event):
     is_bot = replied_user.user.bot
     restricted = replied_user.user.restricted
     verified = replied_user.user.verified
+    if spamwatch:
+        ban = spamwatch.get_ban(user_id)
+        if ban:
+            sw = f"`True` \n**» Reason : **`{ban.reason}`"
+        else:
+            sw = f"`False`"
+    else:
+        sw = "`Not Connected`"
     photo = await event.client.download_profile_photo(
         user_id,
         str(user_id) + ".png",
@@ -60,7 +68,7 @@ async def fetch_info(replied_user, event):
     last_name = last_name.replace("\u2060", "") if last_name else (" ")
     username = "@{}".format(username) if username else ("No Username")
     user_bio = "No Bio" if not user_bio else user_bio
-    #Design taken from https://github.com/SaitamaRobot by @VinuXD
+    #Whois design edited by @VinuXD (Taken from @Saitamarobot)
     caption = "<b>╒═══「<b> Appraisal results:</b>」</b>\n\n"
     caption += f"<b>» Name:</b> {first_name} {last_name}\n"
     caption += f"<b>» Username:</b> {username}\n"
@@ -70,6 +78,7 @@ async def fetch_info(replied_user, event):
     caption += f"<b>» Is Restricted:</b> {restricted}\n"
     caption += "<b>» Permalink:</b> "
     caption += f'<a href="tg://user?id={user_id}">link</a>'
+    caption += f"<b>\n\n» Spamwatched:</b> {sw}\n"
     caption += f"<b>\n\n» About:</b> {user_bio}\n\n"
     caption += f"<b>╘═══「<b>Group count: <code>{common_chat}</code></b>」</b>\n"
     
@@ -77,86 +86,12 @@ async def fetch_info(replied_user, event):
 
 
 @catub.cat_cmd(
-    pattern="userinfo(?:\s|$)([\s\S]*)",
-    command=("userinfo", plugin_category),
-    info={
-        "header": "Gets information of an user such as restrictions ban by spamwatch or cas.",
-        "description": "That is like whether he banned is spamwatch or cas and small info like groups in common, dc ..etc.",
-        "usage": "{tr}userinfo <username/userid/reply>",
-    },
-)
-
-
-async def _(event):
-    "Gets information of an user such as restrictions ban by spamwatch or cas"
-    replied_user, error_i_a = await get_user_from_event(event)
-    if not replied_user:
-        return
-    catevent = await edit_or_reply(event, "`Appraising....`")
-    replied_user = await event.client(GetFullUserRequest(replied_user.id))
-    user_id = replied_user.user.id
-    # some people have weird HTML in their names
-    first_name = html.escape(replied_user.user.first_name)
-    # https://stackoverflow.com/a/5072031/4723940
-    # some Deleted Accounts do not have first_name
-    if first_name is not None:
-        # some weird people (like me) have more than 4096 characters in their
-        # names
-        first_name = first_name.replace("\u2060", "")
-    # inspired by https://telegram.dog/afsaI181
-    common_chats = replied_user.common_chats_count
-    try:
-        dc_id, location = get_input_location(replied_user.profile_photo)
-    except Exception:
-        dc_id = "Couldn't fetch DC ID!"
-    if spamwatch:
-        ban = spamwatch.get_ban(user_id)
-        if ban:
-            sw = f"**Spamwatched:** `True` \n       **-**🤷‍♂️**Reason : **`{ban.reason}`"
-        else:
-            sw = f"**Spamwatched:** `False`"
-    else:
-        sw = "**Spamwatched:**`Not Connected`"
-    try:
-        casurl = "https://api.cas.chat/check?user_id={}".format(user_id)
-        data = get(casurl).json()
-    except Exception as e:
-        LOGS.info(e)
-        data = None
-    if data:
-        if data["ok"]:
-            cas = "**CAS Banned :** `True`"
-        else:
-            cas = "**CAS Banned :** `False`"
-    else:
-        cas = "**CAS Banned :** `Couldn't Fetch`"
-    #Changed design by @VinuXD
-    caption = """╒═══「 Info of [{}](tg://user?id={})」
-   **» **🔖ID : **`{}`
-   **» **👥**Groups in Common : **`{}`
-   **» **🌏**Data Centre Number : **`{}`
-   **» **🔏**Restricted : **`{}`
-   **» **🦅{}
-   **» **👮‍♂️{}
-""".format(
-        first_name,
-        user_id,
-        user_id,
-        common_chats,
-        dc_id,
-        replied_user.user.restricted,
-        sw,
-        cas,
-    )
-    await edit_or_reply(catevent, caption)
-
-@catub.cat_cmd(
     pattern="whois(?:\s|$)([\s\S]*)",
     command=("whois", plugin_category),
     info={
         "header": "Gets info of an user.",
         "description": "User compelete details.",
-        "usage": "{tr}whois <username/userid/reply>",
+        "usage": "{tr}whois @VinuXD",
     },
 )
 async def who(event):
@@ -195,7 +130,7 @@ async def who(event):
     command=("link", plugin_category),
     info={
         "header": "Generates a link to the user's PM .",
-        "usage": "{tr}link <username/userid/reply>",
+        "usage": "{tr}link @VinuXD",
     },
 )
 async def permalink(mention):

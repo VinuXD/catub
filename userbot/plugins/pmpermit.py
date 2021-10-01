@@ -48,9 +48,9 @@ async def do_pm_permit_action(event, chat):  # sourcery no-metrics
     if str(chat.id) not in PM_WARNS:
         PM_WARNS[str(chat.id)] = 0
     try:
-        MAX_FLOOD_IN_PMS = int(gvarstatus("MAX_FLOOD_IN_PMS") or 6)
+        MAX_FLOOD_IN_PMS = int(gvarstatus("MAX_FLOOD_IN_PMS") or 4)
     except (ValueError, TypeError):
-        MAX_FLOOD_IN_PMS = 6
+        MAX_FLOOD_IN_PMS = 4
     totalwarns = MAX_FLOOD_IN_PMS + 1
     warns = PM_WARNS[str(chat.id)] + 1
     remwarns = totalwarns - warns
@@ -123,9 +123,8 @@ async def do_pm_permit_action(event, chat):  # sourcery no-metrics
 You have {warns}/{totalwarns} warns until you get blocked by the CatUserbot.
 Choose an option from below to specify the reason of your message and wait for me to check it. __⬇️"""
     else:
-        USER_BOT_NO_WARN = f"""__Hi__ {mention}__, I haven't approved you yet to personal message me.
-You have {warns}/{totalwarns} warns until you get blocked by the CatUserbot.
-Don't spam my inbox. say reason and wait until my response.__"""
+        USER_BOT_NO_WARN = f"""🚦PM Security of {my_mention}\n\nHeya {mention}!!\n\n〣 Hope you seen [this](t.me/beforepm).
+\n〣 Now Say in one message.\n\n〣 You have {warns}/{totalwarns} warns to get blocked. So, Don't spam here./n/n"""
     addgvar("pmpermit_text", USER_BOT_NO_WARN)
     PM_WARNS[str(chat.id)] += 1
     try:
