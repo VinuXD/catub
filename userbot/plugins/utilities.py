@@ -1,8 +1,6 @@
-import random
 import asyncio
+import random
 
-import bs4
-import requests
 from telethon import functions
 from telethon.errors import FloodWaitError
 from telethon.errors.rpcerrorlist import YouBlockedUserError
@@ -60,7 +58,6 @@ async def _(event):
         await edit_delete(event, f"`{e}`", 7)
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="gey(?:\s|$)([\s\S]*)",
     command=("gey", plugin_category),
@@ -85,7 +82,6 @@ async def app_search(event):
         await event.edit(str(err))
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="fr(?:\s|$)([\s\S]*)",
     command=("fr", plugin_category),
@@ -103,8 +99,6 @@ async def app_search(event):
     event = await edit_or_reply(event, "`Processing!..`")
     id = await reply_id(event)
     try:
-        if not czy:
-            czy = " "
         pluto = await event.client.inline_query(FBOT, czy)
         await pluto[0].click(event.chat_id, reply_to=id, hide_via=True)
         await event.delete()
@@ -112,7 +106,6 @@ async def app_search(event):
         await event.edit(str(err))
 
 
-# t.me/realnub & t.me/amnd33p
 @catub.cat_cmd(
     pattern="iapp(?:\s|$)([\s\S]*)",
     command=("iapp", plugin_category),
@@ -129,60 +122,17 @@ async def app_search(event):
         await edit_delete(event, f"**Usage:** `{chr}iapp <name>`", 10)
         return
     reply_to_id = await reply_id(event)
+    APPBOT = "@plutoniumxbot"
+    cozyneko = "app" + app_name
     event = await edit_or_reply(event, "`Searching!..`")
     try:
-        remove_space = app_name.split(" ")
-        final_name = "+".join(remove_space)
-        page = requests.get(
-            "https://play.google.com/store/search?q=" + final_name + "&c=apps"
-        )
-        str(page.status_code)
-        soup = bs4.BeautifulSoup(page.content, "lxml", from_encoding="utf-8")
-        results = soup.findAll("div", "ZmHEEd")
-        app_name = (
-            results[0].findNext("div", "Vpfmgd").findNext("div", "WsMG1c nnK0zc").text
-        )
-        app_dev = results[0].findNext("div", "Vpfmgd").findNext("div", "KoLSrc").text
-        app_dev_link = (
-            "https://play.google.com"
-            + results[0].findNext("div", "Vpfmgd").findNext("a", "mnKHRc")["href"]
-        )
-        app_rating = (
-            results[0]
-            .findNext("div", "Vpfmgd")
-            .findNext("div", "pf5lIe")
-            .find("div")["aria-label"]
-        )
-        app_link = (
-            "https://play.google.com"
-            + results[0]
-            .findNext("div", "Vpfmgd")
-            .findNext("div", "vU6FJ p63iDd")
-            .a["href"]
-        )
-
-        app_details = "**App Name:** " + app_name + "\n**Developer:** "
-        app_details += f"[{app_dev}]({app_dev_link})" + "\n**Rating:**"
-        app_details += (
-            app_rating.replace("Rated ", " ")
-            .replace(" out of ", "/")
-            .replace(" stars", "", 1)
-            .replace(" stars", " ⭐ ")
-            .replace("five", "5")
-        )
-        catinput = "Inline buttons " + app_details
-        catinput += f" [DOWNLOAD]<buttonurl:{app_link}>"
-        results = await event.client.inline_query(Config.TG_BOT_USERNAME, catinput)
-        await results[0].click(event.chat_id, reply_to=reply_to_id, hide_via=True)
+        score = await event.client.inline_query(APPBOT, cozyneko)
+        await score[0].click(event.chat_id, reply_to=reply_to_id, hide_via=True)
         await event.delete()
-
-    except IndexError:
-        await event.edit("No result found in search. Please enter **Valid app name**")
     except Exception as err:
         await event.edit("Exception Occured:- " + str(err))
 
 
-# t.me/realnub
 @catub.cat_cmd(
     pattern="cid(?:\s|$)([\s\S]*)",
     command=("cid", plugin_category),
@@ -212,9 +162,7 @@ async def _(event):
             await conv.send_message(args)
             check = await conv.get_response()
             replace = check.text
-            info = replace.replace(
-                "════━(@RespawnRobot)━════", f"════━({mention})━════"
-            )
+            info = replace.replace(chat, f"{mention}")
             await event.client.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:
             await event.client(functions.contacts.UnblockRequest(chat))
@@ -243,6 +191,7 @@ async def Gay(event):
         return await edit_delete(event, "`What to choose from`", 10)
     options = osho.split(",")
     await event.edit(f"**Input:** `{osho}`\n**Random:** `{random.choice(options)}`")
+
 
 
 # t.me/realnub

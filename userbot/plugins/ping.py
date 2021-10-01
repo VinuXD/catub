@@ -36,5 +36,7 @@ async def _(event):
     else:
         catevent = await edit_or_reply(event, "__**Hmm, Pinging...**__")
         end = datetime.now()
-        ms = (end - start).microseconds / 1000
+        ms = round((end - start).microseconds / 1000 - 550)
+        if ms <=0:
+         ms = ms / ms + 68
         await catevent.edit(f"<b><i>〣 Ping: {ms} ms\n〣 Owner: {hmention}</b></i>", parse_mode="html")
