@@ -122,7 +122,7 @@ async def app_search(event):
         await edit_delete(event, f"**Usage:** `{chr}iapp <name>`", 10)
         return
     reply_to_id = await reply_id(event)
-    APPBOT = "@plutoniumxbot"
+    APPBOT = "@nedzbot"
     cozyneko = "app" + app_name
     event = await edit_or_reply(event, "`Searching!..`")
     try:
