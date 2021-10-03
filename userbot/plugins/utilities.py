@@ -1,5 +1,6 @@
 import asyncio
 import random
+from datetime import timedelta
 
 from telethon import functions
 from telethon.errors import FloodWaitError
@@ -43,16 +44,15 @@ async def _(event):
                 x = 3
             else:
                 x = 1
-            mins, secs = divmod(t, 60)
-            timer = "**{:02d}:{:02d}**".format(mins, secs)
             try:
-                await pluto.edit(str(timer))
+                timer = timedelta(seconds=t)
+                czy = str(timer).split(".")[0]
+                await pluto.edit(czy)
+                await asyncio.sleep(x)
+                t -= x
             except FloodWaitError as e:
                 t -= e.seconds
                 await asyncio.sleep(e.seconds)
-            else:
-                asyncio.sleep(x - 0.08)
-                t -= x
         await pluto.edit(f"**⏱ Time Up!\n⌛️ Time: {total} seconds.**")
     except Exception as e:
         await edit_delete(event, f"`{e}`", 7)
@@ -191,7 +191,6 @@ async def Gay(event):
         return await edit_delete(event, "`What to choose from`", 10)
     options = osho.split(",")
     await event.edit(f"**Input:** `{osho}`\n**Random:** `{random.choice(options)}`")
-
 
 
 # t.me/realnub
