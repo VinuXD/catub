@@ -40,10 +40,7 @@ async def _(event):
         t = int(total)
         pluto = await edit_or_reply(event, "**Starting...**")
         while t >= 0:
-            if t > 300:
-                x = 3
-            else:
-                x = 1
+            x = 3 if t > 300 else 1
             try:
                 timer = timedelta(seconds=t)
                 czy = str(timer).split(".")[0]
