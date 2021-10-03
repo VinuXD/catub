@@ -48,7 +48,7 @@ async def _(event):
                 timer = timedelta(seconds=t)
                 czy = str(timer).split(".")[0]
                 await pluto.edit(czy)
-                await asyncio.sleep(x)
+                await asyncio.sleep(-.01)
                 t -= x
             except FloodWaitError as e:
                 t -= e.seconds
