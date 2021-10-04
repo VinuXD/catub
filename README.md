@@ -1,6 +1,8 @@
 # CatUserbot
 A simple Telegram userbot based on Telethon .
-[! [Closed Icon](https://telegra.ph/file/19356857dbf3eb7bbd038.jpg)
+[![[Closed Icon](https://telegra.ph/file/19356857dbf3eb7bbd038.jpg)]
+
+
 
 ## Credits
    - Special thanks to [LonamiWebs](https://github.com/LonamiWebs/Telethon/) for Telethon libraray
